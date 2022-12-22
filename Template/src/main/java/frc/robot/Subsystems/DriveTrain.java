@@ -58,14 +58,14 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * Use to create a MechanumDrive
+   * Use to create a MecanumDrive
    */
   private void mecanumDrive() {
     driveBase = new MecanumDrive(motorFL, motorBL, motorFR, motorBR);
     driveBase.setSafetyEnabled(false);
   }
   /**
-   * Use to create a Tank Drive
+   * Use to create a Tank Drive (Differential Drive)
    */
   private void tankDrive() {
     motorBR.follow(motorFR);
