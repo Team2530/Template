@@ -48,8 +48,8 @@ public class DriveTrain extends SubsystemBase {
     this.xbox = xbox;
 
     // Todo: Create DriveTrain type and reverse motors if needed
-    // Todo: Declare using provided method based on DriveTrain type Ex: tankDrive();
-    mecanumDrive();
+
+    // Todo: Declare using provided method based on DriveTrain type Ex: tankDrive();s
 
   }
 
@@ -61,7 +61,6 @@ public class DriveTrain extends SubsystemBase {
   public void singleJoystickDrive(double x, double y, double z) {
     if(currentDriveMode != Modes.Stop) {
       // TODO: Implement DriveTrain driving method Ex: ((DifferentialDrive) driveBase).arcadeDrive(x, z);
-      ((MecanumDrive) driveBase).driveCartesian(y, x, z);
     }
     
   }
