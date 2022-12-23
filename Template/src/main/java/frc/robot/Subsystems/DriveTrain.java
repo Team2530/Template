@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,6 +22,17 @@ public class DriveTrain extends SubsystemBase {
   private XboxController xbox;
 
   RobotDriveBase driveBase;
+
+  public static enum Modes {
+    Stop,
+    Move,
+    Brake,
+    Full,
+    Crawl,
+    Half
+  }
+
+  private Modes currentDriveMode = Modes.Move;
 
   //---------- Drive Motors ----------\\
   WPI_TalonFX motorFL = new WPI_TalonFX(Constants.MOTOR_FL_PORT);
@@ -35,8 +47,9 @@ public class DriveTrain extends SubsystemBase {
     this.stick = stick;
     this.xbox = xbox;
 
-    // Todo: Create DriveTrain type
-
+    // Todo: Create DriveTrain type and reverse motors if needed
+    // Todo: Declare using provided method based on DriveTrain type Ex: tankDrive();
+    mecanumDrive();
 
   }
 
@@ -46,7 +59,19 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void singleJoystickDrive(double x, double y, double z) {
-  
+    if(currentDriveMode != Modes.Stop) {
+      // TODO: Implement DriveTrain driving method Ex: ((DifferentialDrive) driveBase).arcadeDrive(x, z);
+      ((MecanumDrive) driveBase).driveCartesian(y, x, z);
+    }
+    
+  }
+
+  public void toggleDriveMode() {
+    if(currentDriveMode == Modes.Move) {
+      currentDriveMode = Modes.Stop;
+    } else if(currentDriveMode == Modes.Stop) {
+      currentDriveMode = Modes.Move;
+    }
   }
 
   public void reset() {
@@ -71,5 +96,12 @@ public class DriveTrain extends SubsystemBase {
     motorBR.follow(motorFR);
     motorBL.follow(motorFL);
     driveBase = new DifferentialDrive(motorFR, motorFL);
+  }
+
+  private void setAll(double speed) {
+    motorFL.set(speed);
+    motorBL.set(speed);
+    motorFR.set(speed);
+    motorBR.set(speed);
   }
 }

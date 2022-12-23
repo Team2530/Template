@@ -18,10 +18,12 @@ public class SingleJoystickDrive extends CommandBase {
    */
   DriveTrain driveTrain;
   Joystick stick;
+  XboxController xbox;
 
-  public SingleJoystickDrive(DriveTrain driveTrain, Joystick stick) {
+  public SingleJoystickDrive(DriveTrain driveTrain, Joystick stick, XboxController xbox) {
     this.driveTrain = driveTrain;
     this.stick = stick;
+    this.xbox = xbox;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -31,7 +33,6 @@ public class SingleJoystickDrive extends CommandBase {
     driveTrain.singleJoystickDrive(Deadzone.deadZone(stick.getRawAxis(1), Constants.DEADZONE),
         Deadzone.deadZone(stick.getRawAxis(0), Constants.DEADZONE),
         Deadzone.deadZone(stick.getRawAxis(2), Constants.DEADZONE));
-    // driveTrain.singleJoystickDrive(stick.getX() * m, 0, 0);
   }
 
   // Called once the command ends or is interrupted.

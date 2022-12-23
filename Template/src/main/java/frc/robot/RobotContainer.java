@@ -24,7 +24,9 @@ public class RobotContainer {
     private final AHRS m_ahrs = new AHRS();
 
     // ---------- Subsystems ----------\\
-    DriveTrain driveTrain = new DriveTrain(m_ahrs, stick, xbox);
+    private final DriveTrain m_driveTrain = new DriveTrain(m_ahrs, stick, xbox);
+    private final LimeLight m_limeLight = new LimeLight(m_driveTrain);
+    private final USBCamera driveCamera = new USBCamera();
 
     // ---------- Autonomous Commands ----------\\
 
@@ -41,14 +43,12 @@ public class RobotContainer {
     }
 
     public void configureButtonBindings() {
-        new JoystickButton(stick, 1).whenPressed(() -> {
-
-        }).whenReleased(() -> {
-
+        new JoystickButton(stick, Constants.J_DRIVETRAIN_TOGGLE).whenPressed(() -> {
+            m_driveTrain.toggleDriveMode();
         });
 
-        new JoystickButton(xbox, 1).whileHeld(() -> {
-
+        new JoystickButton(xbox, Constants.X_AIM_TOWARDS_TARGET).whileHeld(() -> {
+            m_limeLight.aimAtTarget();
         });
     }
 
@@ -60,7 +60,7 @@ public class RobotContainer {
      * @return the command to run when the robot is enabled
      */
     public Command getEnableCommand() {
-        return new InstantCommand(() -> driveTrain.reset());
+        return new InstantCommand(() -> m_driveTrain.reset());
     }
 
     /**
@@ -69,7 +69,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return new Autonomous(m_driveTrain, m_ahrs);
     }
 
     /**
@@ -77,7 +77,7 @@ public class RobotContainer {
      * @return the command to run in Telop
      */
     public Command getTelopCommand() {
-        return null;
+        return new SingleJoystickDrive(m_driveTrain, stick, xbox);
     }
     /**
      * Command to run in Test Mode
